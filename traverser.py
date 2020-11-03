@@ -1,6 +1,8 @@
 import sqlite3
+import math
 from datetime import datetime
 from datetime import timedelta
+from geopy.distance import distance
 
 try:
     conn = sqlite3.connect('LifeMap_GS4.db')
@@ -8,6 +10,7 @@ except EnvironmentError as e:
     print(e)
 
 date_format = "%Y%m%d%H%M%S%a"
+PRECISION = math.pow(10, -6)
 
 date = '20120813113014SAT'
 date_seven_days_ago = (datetime.strptime(date, date_format) + timedelta(days=-1000)).strftime(date_format)
@@ -20,4 +23,4 @@ query = f'SELECT main.locationTable._time_location, main.locationTable._latitude
 cur.execute(query)
 
 for row in cur.fetchall():
-    print(row)
+    print(distance((row[1]*PRECISION, row[2]*PRECISION), (row[3]*PRECISION, row[4]*PRECISION)).km)
