@@ -7,9 +7,7 @@ app = Flask(__name__)
 @app.route('/<int:subject_id>/<string:date>')
 def hello_world(subject_id, date):
     try:
-        response_file = open(as_txt_file(contactgraph(subject_id, date)).name, 'r')
-        for line in response_file.readlines:
-            print(line)
+        response_file = open(as_txt_file(contactgraph(subject_id, date)).name, 'rb')
         return send_file(response_file, as_attachment=True, attachment_filename='adjacency_matrix.txt')
     except Exception as e:
         return str(e)
