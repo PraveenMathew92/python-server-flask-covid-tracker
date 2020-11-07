@@ -3,6 +3,7 @@ from werkzeug.utils import secure_filename
 from flask import Flask, request, send_file
 from markupsafe import escape
 from traverser import contactgraph, as_txt_file
+import shutil
 
 app = Flask(__name__)
 
@@ -25,8 +26,7 @@ def upload_file():
     else:
         filename = secure_filename(file.filename)
         downloaded_file = open(filename, "wb")
-        for line in file.readlines():
-            downloaded_file.write(line)
+        shutil.copyfileobj(file, downloaded_file)
         file.close()
         downloaded_file.close()
         print('saved file successfully')
