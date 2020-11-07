@@ -18,11 +18,16 @@ def hello_world(subject_id, date):
 def upload_file():
     print(str(request.files))
     if 'file' not in request.files:
-        return 'no file'
+        print('no file')
     file = request.files['file']
     if file.filename == '':
-        return 'no filename'
+        print('no filename')
     else:
         filename = secure_filename(file.filename)
-        file.save(filename)
-        return 'saved file successfully'
+        downloaded_file = open(filename, "wb")
+        for line in file.readlines():
+            downloaded_file.write(line)
+        file.close()
+        downloaded_file.close()
+        print('saved file successfully')
+    return 'done'
